@@ -62,6 +62,7 @@ User must launch TWS prior to interacting with the code, this is necessary becau
 
 <font size="1">
 **NOTE:**  
+    
     - To allow connections from other hosts, add the requesting to host address to "Trusted IPs" under "Edit -> Global Configuration -> API -> Settings".  
     - Developers must only log into **TWS Paper Trading** account, credentials for which can be retreived from (To be added...).
 </font>
