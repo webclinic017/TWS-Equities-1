@@ -30,8 +30,8 @@ Before users try to interact with the code, they must ensure that following crit
 Once the above requirements are, follow the below steps to setup the project on your local machine:
 
 #### Cloning the project:
-To be able to use this code to extract market data, user first needs have the code cloned to into their local machine. Run the following command to do that:
-<br><b>
+To be able to use this code to extract market data, user first needs have the code cloned to into their local machine. Run the following command to do that:  
+<b>
 ```
     git clone https://github.com/sudoMode/TWS-Project.git
 ```
@@ -40,24 +40,20 @@ To be able to use this code to extract market data, user first needs have the co
 #### Virtual Environment
 The project itself contains the **virtual environment(env_k2q)** needed to run the code, so that user doesn't have to spend time getting all the dependencies right. Though the user is expected to activate the vritual environment before trying to extract any data, here's how to do it:
 1. Change directory to project directory:  
-<b>
 ```
     cd TWS-Project
 ```
-</b>  
-
+   
 2. Activate the virtual environment:  
-<b>
 ```
     source env_k2q/bin/activate
 ```
-</b>  
 
 <font size="1">**NOTE:** "env_k2q/bin" contains multiple activation scripts, command given above works for Linux based system that use bash as their default shell. Use one according to your system envrionment.</font>  
 
 #### Launch IB's Trader Work Station(TWS):
-User must launch TWS prior to interacting with the code, this is necessary because IB API will be hosted on your local machine once you're logged into TWS. Code uses default values to connect with the API which can be tweaked from Global API Settings in TWS.
-<br><b>
+User must launch TWS prior to interacting with the code, this is necessary because IB API will be hosted on your local machine once you're logged into TWS. Code uses default values to connect with the API which can be tweaked from Global API Settings in TWS.  
+<b>
 ```
     DEFAULT_HOST = "127.0.0.1"
     DEFAULT_PORT = 7497
@@ -66,6 +62,7 @@ User must launch TWS prior to interacting with the code, this is necessary becau
 
 <font size="1">
 **NOTE:**  
+    
     - To allow connections from other hosts, add the requesting to host address to "Trusted IPs" under "Edit -> Global Configuration -> API -> Settings".  
     - Developers must only log into **TWS Paper Trading** account, credentials for which can be retreived from (To be added...).
 </font>
@@ -117,41 +114,41 @@ User can expected output data to be in the following format:
 ### Available commands & options:
 The project provides a large catalog of CLI options that user can tweak according to his prefrences, here's a detailed description of them all:
 #### Commands:
-- **tickers:**
-  Tickers commands is to be used to pass ticker IDs as an inout to the program, there're 3 ways in which the user can do so:
-    - **--list / -l:** This option will let you pass a custom list of ticker IDs as input.<br>
-      <font size="2">**Sample:**
-      <br><b>
+- **tickers:**  
+> Tickers commands is to be used to pass ticker IDs as an inout to the program, there're 3 ways in which the user can do so:
+> - **--list / -l:** This option will let you pass a custom list of ticker IDs as input.<br>
+>> <font size="2">**Sample:**  
 ```
         python controller.py tickers -l 1301 1302 13013 1304 1305
 ```
-    </b>
+</font>  
+
+> - **--file / -f:** This option will let you pass a file path as the ticker input, file must be a CSV and should contain ticker IDs for which the data is to be exracted.  
+>> <font size="2">**Sample:**  
+```
+        python controller.py tickers -f data_files/input/tickers.csv
+```
+</font>  
+
+> - **--url / -u:** This option will let you pass a Google Sheet URL as ticker input.<br>
+>> <font size="2">**Sample:**  
+```
+        python controller.py tickers -u https://sheets.google.com/?sheet_id=123
+```
+</font>  
+
+
+>>> <font size="1">**NOTE:**  
+>>>> - URL feature is still being developed and is not available for live usage.<br>
+>>>> - As of now it is mandatory to first pass all the optional arguments and then use the **tickers** command at the end of the CLI call, this is because of how Python's Argparse accepts optional arguments. This feature will be improved in future releases.  
 </font>
-    - **--file / -f:** This option will let you pass a file path as the ticker input, file must be a CSV and should contain ticker IDs for which the data is to be exracted.<br>
-        <font size="2">**Sample:**
-        <br><b>
-    ```
-            python controller.py tickers -f data_files/input/tickers.csv
-    ```
-        </b>
-    </font>
-    - **--url / -u:** This option will let you pass a Google Sheet URL as ticker input.<br>
-        <font size="2">**Sample:**
-        <br><b>
-    ```
-            python controller.py tickers -u https://sheets.google.com/?sheet_id=123
-    ```
-    </b>
-    </font><br>
 
-    <font size="1">**NOTE:**<br>
-        - URL feature is still being developed and is not available for live usage.<br>
-        - As of now it is mandatory to first pass all the optional arguments and then use the **tickers** command at the end of the CLI call, this is because of how Python's Argparse accepts optional arguments. This feature will be improved in future releases.<br></font>
+#### Options:  
 
-#### Options:
 - **--end-date / -ed:** This option can be used to pass as an argument a date value that will be used as the target date for which the data extraction is to be perfomed.<br>
-  Expected date format: "YYYYMMDD"<br>
-  Default value: "20210104"<br>
+Expected date format: "YYYYMMDD"  
+Default value: "20210104"  
+
 - **--end-time / -et:** This options can be used to pass as an argument a time value will be used as the target time for which the extraction is to be perfomed.<br>
   Expected time format(24 hour): "HH:MM:SS"<br>
   Default value: "15:01:00"<br>
