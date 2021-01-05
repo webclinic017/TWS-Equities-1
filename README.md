@@ -35,23 +35,25 @@ To be able to use this code to extract market data, user first needs have the co
 ```
     git clone https://github.com/sudoMode/TWS-Project.git
 ```
+</b>
 
 #### Virtual Environment
 The project itself contains the **virtual environment(env_k2q)** needed to run the code, so that user doesn't have to spend time getting all the dependencies right. Though the user is expected to activate the vritual environment before trying to extract any data, here's how to do it:
-1. Change directory to project directory:
-   <br><b>
+1. Change directory to project directory:  
+<b>
 ```
     cd TWS-Project
 ```
-</b>
-2. Activate the virtual environment:
-<br><b>
+</b>  
+
+2. Activate the virtual environment:  
+<b>
 ```
     source env_k2q/bin/activate
 ```
-</b>
+</b>  
 
-<font size="1">**NOTE:** "env_k2q/bin" contains multiple activation scripts, command given above works for Linux based system that use bash as their default shell. Use one according to your system envrionment.</font>
+<font size="1">**NOTE:** "env_k2q/bin" contains multiple activation scripts, command given above works for Linux based system that use bash as their default shell. Use one according to your system envrionment.</font>  
 
 #### Launch IB's Trader Work Station(TWS):
 User must launch TWS prior to interacting with the code, this is necessary because IB API will be hosted on your local machine once you're logged into TWS. Code uses default values to connect with the API which can be tweaked from Global API Settings in TWS.
@@ -62,20 +64,23 @@ User must launch TWS prior to interacting with the code, this is necessary becau
 ```
 </b>
 
-<font size="1">**NOTE:**<br>- To allow connections from other hosts, add the requesting to host address to "Trusted IPs" under "Edit -> Global Configuration -> API -> Settings".
-<br>- Developers must only log into **TWS Paper Trading** account, credentials for which can be retreived from (To be added...).</font>
+<font size="1">
+**NOTE:**  
+    - To allow connections from other hosts, add the requesting to host address to "Trusted IPs" under "Edit -> Global Configuration -> API -> Settings".  
+    - Developers must only log into **TWS Paper Trading** account, credentials for which can be retreived from (To be added...).
+</font>
 
 
 ### How to use this project?
-Once all the above mentioned prerequisites are met, user can start interacting with the code via given Command Line Interface(CLI). The main file that serves as the starting point for the program is called **"controller.py"**, user can call this file and pass arguments in the following manner:
-<br><font size="2"><b>
+Once all the above mentioned prerequisites are met, user can start interacting with the code via given Command Line Interface(CLI). The main file that serves as the starting point for the program is called **"controller.py"**, user can call this file and pass arguments in the following manner:  
+<font size="2"><b>
 ```
   python controller.py --end-date 20210104 --end-time 09:01:00 -vb tickers -l 1301
 ```
 </font></b>
 
-User can expected output data to be in the following format:
-<br><font size="1"><b>
+User can expected output data to be in the following format:  
+<font size="1"><b>
 ```
     {
       "1301": {
@@ -103,7 +108,8 @@ User can expected output data to be in the following format:
       }
     }
 ```
-</b><br>
+</b>  
+
 **NOTE:** Default nature of the program is to create a data dump in the form of a JSON file for each ticker that is processed, the same JSON file is used to create a final CSV file and can be found at the location mentioned inside "out_file" field in the "meta_data" section. This feature can be turned off by use "--data-dump / -dd " toggle.
 </font>
 
@@ -227,14 +233,14 @@ Developer are recommended to follow the steps below to make contribution to the 
 - It is recommended that users attach screenshot of the problem and also provide input command &
   output received from the CLI.
 
-#### 💻Contribute to code:
+#### 💻 Contribute to code:
 - Developers are recommended to fork this Github repository and code new features in their in your repository.
 - Create a new branch by the name of the feature you are developing.
 - Once changes are done, commit them with proper messages.
 - Push the original branch back to origin and create a pull request.
 - Changes will be reviewed and merged after approval from the repository owner.
 
-#### 📖Contibuting to documentation:
+#### 📖 Contibuting to documentation:
 - If you spot a problem with the project documentation and wish to report it, please follow the steps mentioned under **[Raise a bug section](#Raise-a-bug:)**.
 - If you want to update the documentation yourself:
     - Fork the **dev** branch and make your changes.
