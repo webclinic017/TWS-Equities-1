@@ -117,38 +117,38 @@ The project provides a large catalog of CLI options that user can tweak accordin
 - **tickers:**
   Tickers commands is to be used to pass ticker IDs as an inout to the program, there're 3 ways in which the user can do so:
     - **--list / -l:** This option will let you pass a custom list of ticker IDs as input.<br>
-      <font size="2">**Sample:**
-      <br><b>
+      <font size="2">**Sample:**  
+<b>
 ```
         python controller.py tickers -l 1301 1302 13013 1304 1305
 ```
-    </b>
+</b>  
+
 </font>
-    - **--file / -f:** This option will let you pass a file path as the ticker input, file must be a CSV and should contain ticker IDs for which the data is to be exracted.<br>
-        <font size="2">**Sample:**
-        <br><b>
+    - **--file / -f:** This option will let you pass a file path as the ticker input, file must be a CSV and should contain ticker IDs for which the data is to be exracted.  
+    <font size="2">**Sample:**  
     ```
             python controller.py tickers -f data_files/input/tickers.csv
     ```
-        </b>
     </font>
+
     - **--url / -u:** This option will let you pass a Google Sheet URL as ticker input.<br>
-        <font size="2">**Sample:**
-        <br><b>
+        <font size="2">**Sample:**  
     ```
             python controller.py tickers -u https://sheets.google.com/?sheet_id=123
     ```
-    </b>
-    </font><br>
+    </font>  
 
-    <font size="1">**NOTE:**<br>
+    <font size="1">**NOTE:**  
         - URL feature is still being developed and is not available for live usage.<br>
         - As of now it is mandatory to first pass all the optional arguments and then use the **tickers** command at the end of the CLI call, this is because of how Python's Argparse accepts optional arguments. This feature will be improved in future releases.<br></font>
 
-#### Options:
+#### Options:  
+
 - **--end-date / -ed:** This option can be used to pass as an argument a date value that will be used as the target date for which the data extraction is to be perfomed.<br>
-  Expected date format: "YYYYMMDD"<br>
-  Default value: "20210104"<br>
+Expected date format: "YYYYMMDD"  
+Default value: "20210104"  
+
 - **--end-time / -et:** This options can be used to pass as an argument a time value will be used as the target time for which the extraction is to be perfomed.<br>
   Expected time format(24 hour): "HH:MM:SS"<br>
   Default value: "15:01:00"<br>
