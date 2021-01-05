@@ -30,8 +30,8 @@ Before users try to interact with the code, they must ensure that following crit
 Once the above requirements are, follow the below steps to setup the project on your local machine:
 
 #### Cloning the project:
-To be able to use this code to extract market data, user first needs have the code cloned to into their local machine. Run the following command to do that:
-<br><b>
+To be able to use this code to extract market data, user first needs have the code cloned to into their local machine. Run the following command to do that:  
+<b>
 ```
     git clone https://github.com/sudoMode/TWS-Project.git
 ```
@@ -40,24 +40,20 @@ To be able to use this code to extract market data, user first needs have the co
 #### Virtual Environment
 The project itself contains the **virtual environment(env_k2q)** needed to run the code, so that user doesn't have to spend time getting all the dependencies right. Though the user is expected to activate the vritual environment before trying to extract any data, here's how to do it:
 1. Change directory to project directory:  
-<b>
 ```
     cd TWS-Project
 ```
-</b>  
-
+   
 2. Activate the virtual environment:  
-<b>
 ```
     source env_k2q/bin/activate
 ```
-</b>  
 
 <font size="1">**NOTE:** "env_k2q/bin" contains multiple activation scripts, command given above works for Linux based system that use bash as their default shell. Use one according to your system envrionment.</font>  
 
 #### Launch IB's Trader Work Station(TWS):
-User must launch TWS prior to interacting with the code, this is necessary because IB API will be hosted on your local machine once you're logged into TWS. Code uses default values to connect with the API which can be tweaked from Global API Settings in TWS.
-<br><b>
+User must launch TWS prior to interacting with the code, this is necessary because IB API will be hosted on your local machine once you're logged into TWS. Code uses default values to connect with the API which can be tweaked from Global API Settings in TWS.  
+<b>
 ```
     DEFAULT_HOST = "127.0.0.1"
     DEFAULT_PORT = 7497
