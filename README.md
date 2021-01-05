@@ -114,34 +114,34 @@ User can expected output data to be in the following format:
 ### Available commands & options:
 The project provides a large catalog of CLI options that user can tweak according to his prefrences, here's a detailed description of them all:
 #### Commands:
-- **tickers:**
-  Tickers commands is to be used to pass ticker IDs as an inout to the program, there're 3 ways in which the user can do so:
-    - **--list / -l:** This option will let you pass a custom list of ticker IDs as input.<br>
-      <font size="2">**Sample:**  
-<b>
+- **tickers:**  
+> Tickers commands is to be used to pass ticker IDs as an inout to the program, there're 3 ways in which the user can do so:
+> - **--list / -l:** This option will let you pass a custom list of ticker IDs as input.<br>
+>> <font size="2">**Sample:**  
 ```
         python controller.py tickers -l 1301 1302 13013 1304 1305
 ```
-</b>  
+</font>  
 
+> - **--file / -f:** This option will let you pass a file path as the ticker input, file must be a CSV and should contain ticker IDs for which the data is to be exracted.  
+>> <font size="2">**Sample:**  
+```
+        python controller.py tickers -f data_files/input/tickers.csv
+```
+</font>  
+
+> - **--url / -u:** This option will let you pass a Google Sheet URL as ticker input.<br>
+>> <font size="2">**Sample:**  
+```
+        python controller.py tickers -u https://sheets.google.com/?sheet_id=123
+```
+</font>  
+
+
+>>> <font size="1">**NOTE:**  
+>>>> - URL feature is still being developed and is not available for live usage.<br>
+>>>> - As of now it is mandatory to first pass all the optional arguments and then use the **tickers** command at the end of the CLI call, this is because of how Python's Argparse accepts optional arguments. This feature will be improved in future releases.  
 </font>
-    - **--file / -f:** This option will let you pass a file path as the ticker input, file must be a CSV and should contain ticker IDs for which the data is to be exracted.  
-    <font size="2">**Sample:**  
-    ```
-            python controller.py tickers -f data_files/input/tickers.csv
-    ```
-    </font>
-
-    - **--url / -u:** This option will let you pass a Google Sheet URL as ticker input.<br>
-        <font size="2">**Sample:**  
-    ```
-            python controller.py tickers -u https://sheets.google.com/?sheet_id=123
-    ```
-    </font>  
-
-    <font size="1">**NOTE:**  
-        - URL feature is still being developed and is not available for live usage.<br>
-        - As of now it is mandatory to first pass all the optional arguments and then use the **tickers** command at the end of the CLI call, this is because of how Python's Argparse accepts optional arguments. This feature will be improved in future releases.<br></font>
 
 #### Options:  
 
