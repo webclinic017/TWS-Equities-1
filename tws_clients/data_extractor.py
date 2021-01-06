@@ -218,20 +218,19 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
             self.logger.info(f'{message}')
             # error code 502 indicates connection failure
             if code == 502:
-                # TODO: to be implemented!
-                pass
+                self.logger.critical(f'Connection Failure: {message}, Error Code: {code}')
+                raise ConnectionError('Could not connect to TWS, please ensure TWS is running with proper API settings.')
             # error codes 2103, 2105, 2157 indicate broken connection
             if code in [2103, 2105, 2157]:
-                # TODO: to be implemented!
-                self.logger.warning(f'Insecure Connection: {message}, Error code: {code}')
-                pass
+                self.logger.critical(f'Insecure Connection: {message}, Error code: {code}')
+                raise ConnectionError(f'Detected broken connection, please try re-connecting the webfarms in TWS.')
             # error codes 2104, 2106, 2158 indicate connection is OK
             if code in [2104, 2106, 2158]:
-                # TODO: to be implemented!
-                pass
+                self.logger.info(message)
             # last error code received, marks the completion of initial hand-shake
             # call back the extractor to start pulling historical data
             if code == 2158:
+                self.logger.info(f'Secure connection established to TWS API, initial handshake completed.')
                 self.handshake_completed = True
         else:
             self.logger.error(f'{message}: Ticker ID: {id}, Error Code: {code}')
@@ -266,7 +265,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
 
 if __name__ == '__main__':
     from time import time
-    from data_files.input_data import load_csv
+    # from data_files.input_data import load_csv
 
     test_tickers = [1301, 1302, 1303, 3434, 3450]
     total_tickers = len(test_tickers)
@@ -274,14 +273,15 @@ if __name__ == '__main__':
     data = {}
     for i in range(total_tickers):
         ticker = test_tickers[i]
-        extractor = HistoricalDataExtractor(end_date='20200601',
+        extractor = HistoricalDataExtractor(end_date='20210106',
                                             end_time='15:01:00',
                                             create_data_dump=True,
                                             timeout=3,
                                             debug=True)
         extractor.extract_historical_data(ticker)
         # data[ticker] = extractor.data
-        print(f'=== Processed: {i+1} / {total_tickers} ===', end='\n')
+        print('here')
+        print(f'=== Processed: {i+1} / {total_tickers} ===')
     end = time()
     lapsed = round(end - start, 3)
     print(dumps(data, indent=2, sort_keys=True))

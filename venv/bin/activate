@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/mandeepsingh/dev/K2Q/projects/TWS-Project/venv"
+VIRTUAL_ENV="/Users/mandeepsingh/dev/K2Q/projects/TWS-Equities/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

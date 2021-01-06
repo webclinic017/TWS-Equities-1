@@ -1,7 +1,7 @@
+from alive_progress import alive_bar
 from tws_clients.base import TWSWrapper
 from tws_clients.base import TWSClient
 from tws_clients.data_extractor import HistoricalDataExtractor
-import sys
 
 
 def extractor(ticker, end_date, end_time, duration, bar_size, what_to_show, use_rth,
@@ -39,17 +39,14 @@ def extract_historical_data(tickers=(), end_date='20200101', end_time='15:01:00'
         @return: an array of dictionaries, containing relevant data for each ticker
     """
     data = {}
-    total_tickers = len(tickers)
-    if debug:
-        sys.stdout.write(f'Extracting historical data for {total_tickers} tickers...\n')
-    for i in range(total_tickers):
-        ticker = tickers[i]
-        data[ticker] = extractor(ticker, end_date, end_time, duration, bar_size, what_to_show,
-                                 use_rth, date_format, keep_upto_date, chart_options,
-                                 create_data_dump, verbose, debug)
-        if debug:
-            sys.stdout.write(f'\r--- Processed: {i+1} / {total_tickers} ---')
-    sys.stdout.flush()
+    total = len(tickers)
+    with alive_bar(total=total, title='Data Extraction', calibrate=50) as bar:
+        for i in range(total):
+            ticker = tickers[i]
+            data[ticker] = extractor(ticker, end_date, end_time, duration, bar_size, what_to_show,
+                                     use_rth, date_format, keep_upto_date, chart_options,
+                                     create_data_dump, verbose, debug)
+            bar()  # update progress bar
     return data
 
 
