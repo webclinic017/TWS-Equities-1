@@ -62,8 +62,10 @@ def main():
             print(dumps(data, indent=2, sort_keys=True))
     except KeyboardInterrupt:
         logger.warning('Detected keyboard interruption from the user, terminating program...')
+        print('Detected keyboard interruption from the user, terminating program...')
     except Exception as e:
         logger.critical(f'Program crashed, Error: {e}')
+        print(f'Error: {e}')
         if user_args['debug']:
             raise e
 

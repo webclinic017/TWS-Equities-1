@@ -35,7 +35,6 @@ def load_csv(file_path=None):
     # TODO: add a logger
     if file_path is None:
         file_path = get_default_file_path()
-        print(f'File: {file_path}')
     validate_target_file(file_path)
     csv = pd.read_csv(file_path)
     return csv.code.tolist()
