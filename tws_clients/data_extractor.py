@@ -265,12 +265,17 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
 
 if __name__ == '__main__':
     from time import time
-    # from data_files.input_data import load_csv
+    from data_files.input_data import test_tickers
 
-    test_tickers = [1301, 1302, 3434]
+    test_tickers = test_tickers[:5]
     total_tickers = len(test_tickers)
     start = time()
     data = {}
+    extractor = HistoricalDataExtractor(end_date='20210106',
+                                        end_time='09:01:00',
+                                        create_data_dump=True,
+                                        timeout=3,
+                                        debug=True)
     for i in range(total_tickers):
         ticker = test_tickers[i]
         extractor = HistoricalDataExtractor(end_date='20210106',
