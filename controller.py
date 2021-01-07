@@ -57,7 +57,7 @@ def main():
         # data size increases in proportion to number of tickers
         # 1 day's full bar data is approximately 50 KB for each ticker
         data = extract_historical_data(**user_args)
-        create_csv_dump(user_args['end_date'], user_args['debug'])
+        create_csv_dump(user_args['end_date'], user_args['verbose'])
         if user_args['verbose']:
             print(dumps(data, indent=2, sort_keys=True))
     except KeyboardInterrupt:

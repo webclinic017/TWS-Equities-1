@@ -267,20 +267,19 @@ if __name__ == '__main__':
     from time import time
     # from data_files.input_data import load_csv
 
-    test_tickers = [1301, 1302, 1303, 3434, 3450]
+    test_tickers = [1301, 1302, 3434]
     total_tickers = len(test_tickers)
     start = time()
     data = {}
     for i in range(total_tickers):
         ticker = test_tickers[i]
         extractor = HistoricalDataExtractor(end_date='20210106',
-                                            end_time='15:01:00',
+                                            end_time='09:01:00',
                                             create_data_dump=True,
                                             timeout=3,
                                             debug=True)
         extractor.extract_historical_data(ticker)
-        # data[ticker] = extractor.data
-        print('here')
+        data[ticker] = extractor.data
         print(f'=== Processed: {i+1} / {total_tickers} ===')
     end = time()
     lapsed = round(end - start, 3)
