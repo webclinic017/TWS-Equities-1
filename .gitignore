@@ -3,7 +3,9 @@
 .idea/
 *.xml
 *.html
-data_files/historical_data/
+data_files/historical_data/*
+!data_files/historical_data/*.py
+
 logs/
 
 # Byte-compiled / optimized / DLL files
