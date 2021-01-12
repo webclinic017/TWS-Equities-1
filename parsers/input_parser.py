@@ -2,8 +2,10 @@ from argparse import ArgumentParser
 from argparse import ArgumentTypeError
 from datetime import datetime
 from os.path import isfile
+from data_files import get_input_tickers
 from data_files import load_csv
-from data_files import test_tickers
+from data_files import TEST_TICKERS
+import sys
 
 
 class EndDate:
@@ -101,9 +103,9 @@ def load_tickers_from_file(args):
     tickers, file = [], args.file
     # TODO: temporary block for testing
     if file == 'test':
-        tickers = test_tickers
+        tickers = TEST_TICKERS
     elif file == 'default':
-        tickers = load_csv()
+        tickers = get_input_tickers()[:100]
     elif file.endswitch('.csv'):
         tickers = load_csv(file)
     else:
@@ -136,9 +138,11 @@ def parse_tickers(args):
 
     # user did not pass an argument for tickers
     if not(bool(user_keys)):
-        # TODO: display error message without stacktrace
-        # TODO: temporary test tickers, for direct run
-        tickers.extend([1301, 1302, 1303, 3434, 3435, 6758, 3050, 7203, 8311])
+        _help = 'python controller tickers -h'
+        sys.stderr.write('Users did not pass ticker IDs as an input.\n')
+        sys.stderr.write(f'Run "{_help}" to view help on tickers command.\n')
+        sys.stderr.flush()
+        exit(0)
     else:
         # TODO: prevent user from using multiple keys
         user_key = user_keys[0]
@@ -158,6 +162,10 @@ def parse_tickers(args):
 
 
 def parse_user_args():
+    """
+        Sets up CLI arguments
+        :return: parsed arguments
+    """
     # TODO: fails if tickers are not passed
     # top-level parser
     parser = ArgumentParser()
