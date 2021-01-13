@@ -30,13 +30,14 @@
             - Tickers must be passed as the last input to the CLI (to be handled).
 """
 
-from parsers import parse_user_args
+from sys import stderr
+from sys import stdout
+
 from data_files import create_csv_dump
 from data_files import generate_extraction_metrics
-from tws_clients import extract_historical_data
 from helpers import get_logger
-import sys
-from json import dumps
+from parsers import parse_user_args
+from tws_clients import extract_historical_data
 
 
 def setup_logger(args):
@@ -55,18 +56,19 @@ def main():
     try:
         extract_historical_data(**user_args)
         create_csv_dump(user_args['end_date'])
-        metrics = generate_extraction_metrics(user_args['end_date'], input_tickers=user_args['tickers'])
-        print(dumps(metrics, sort_keys=False, indent=4))
+        generate_extraction_metrics(user_args['end_date'], input_tickers=user_args['tickers'])
     except KeyboardInterrupt:
-        logger.warning('Detected keyboard interruption from the user, terminating program...')
-        sys.stderr.write('Detected keyboard interruption from the user, terminating program...\n')
+        _message = 'Detected keyboard interruption from the user, terminating program...'
+        logger.warning(_message)
+        stderr.write(f'{_message}\n')
     except Exception as e:
-        logger.critical(f'Program crashed, Error: {e}', exc_info=True)
-        sys.stderr.write(f'Program crashed, Error: {e}\n')
+        _message = f'Program crashed, Error: {e}'
+        logger.critical(_message, exc_info=True)
+        stderr.write(f'{_message}\n')
         # if user_args['debug']:
         #     raise e
-    sys.stderr.flush()
-    sys.stdout.flush()
+    stderr.flush()
+    stdout.flush()
 
 
 if __name__ == '__main__':

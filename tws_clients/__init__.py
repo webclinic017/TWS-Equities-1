@@ -1,9 +1,10 @@
+from sys import stdout
 from alive_progress import alive_bar
 from helpers import BAR_CONFIG as _BAR_CONFIG
+
 from tws_clients.base import TWSWrapper
 from tws_clients.base import TWSClient
 from tws_clients.data_extractor import HistoricalDataExtractor
-import sys
 
 
 _BATCH_SIZE = 30
@@ -62,10 +63,10 @@ def extract_historical_data(tickers=(), end_date='20201231', end_time='15:01:00'
     batches = batch_maker(tickers, batch_size)
     total = len(batches)
 
-    sys.stdout.write(f'{"-"*40} Init Extraction {"-"*40}\n')
-    sys.stdout.write(f'A total of {len(tickers)} tickers have been split into {total} batches of {batch_size} '
+    stdout.write(f'{"-"*40} Init Extraction {"-"*40}\n')
+    stdout.write(f'A total of {len(tickers)} tickers have been split into {total} batches of {batch_size} '
                      f'tickers each.\n')
-    sys.stdout.write('Batch-wise extraction in progress, this can take some time, please be patient...\n')
+    stdout.write('Batch-wise extraction in progress, this can take some time, please be patient...\n')
 
     with alive_bar(total=total, **_BAR_CONFIG) as bar:
         for i in range(total):
@@ -75,8 +76,8 @@ def extract_historical_data(tickers=(), end_date='20201231', end_time='15:01:00'
                       create_data_dump, verbose, debug)
             bar()  # update progress bar
 
-    sys.stdout.write('\n')
-    sys.stdout.flush()
+    stdout.write('\n')
+    stdout.flush()
 
 
 if __name__ == '__main__':
