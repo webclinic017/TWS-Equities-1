@@ -67,7 +67,7 @@ LOG_COLOR_MAP = {
 LOG_LOCATION = join(dirname(dirname(__file__)), 'logs')
 
 
-def get_log_file_name():
+def get_log_file():
     """
         # TODO: to be added...
         - generates a file based on execution time and return the path
@@ -97,7 +97,7 @@ def update_logging_config(name, level, console):
         LOGGING_CONFIG['loggers'][name]['handlers'].append('console')
 
     # create a log file...
-    LOGGING_CONFIG['handlers']['file']['filename'] = get_log_file_name()
+    LOGGING_CONFIG['handlers']['file']['filename'] = get_log_file()
 
 
 def get_logger(name, level='ERROR', console=False, colored=False):
@@ -110,7 +110,8 @@ def get_logger(name, level='ERROR', console=False, colored=False):
         :return: logger object
     """
     name = 'root' if name == '__main__' else 'child'
-    update_logging_config(name, level, console)
+    if name == 'root':
+        update_logging_config(name, level, console)
     # load logging config
     dictConfig(LOGGING_CONFIG)
     # init logger
