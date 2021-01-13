@@ -30,44 +30,45 @@
             - Tickers must be passed as the last input to the CLI (to be handled).
 """
 
-from parsers import parse_user_args
+from sys import stderr
+from sys import stdout
+
 from data_files import create_csv_dump
-from tws_clients import extract_historical_data
+from data_files import generate_extraction_metrics
 from helpers import get_logger
-from json import dumps
+from parsers import parse_user_args
+from tws_clients import extract_historical_data
 
 
 def setup_logger(args):
     """
-        # TODO: To be added...
-        - sets log level
+        Setup & return a logger for the current run.
     """
-    level = 'DEBUG' if args['debug'] else (
-            'INFO' if args['verbose'] else 'ERROR')
+    level = 'INFO' if args['debug'] else (
+            'WARNING' if args['verbose'] else 'ERROR')
     logger = get_logger(__name__, level)
     return logger
 
 
 def main():
     user_args = vars(parse_user_args())
-    # print(f'User Args:\n{dumps(user_args, indent=2, sort_keys=True)}')
     logger = setup_logger(user_args)
     try:
-        # if needed, data can also be retrieved in a dictionary from the following function call
-        # data size increases in proportion to number of tickers
-        # 1 day's full bar data is approximately 50 KB for each ticker
-        data = extract_historical_data(**user_args)
-        create_csv_dump(user_args['end_date'], user_args['verbose'])
-        if user_args['verbose']:
-            print(dumps(data, indent=2, sort_keys=True))
+        extract_historical_data(**user_args)
+        create_csv_dump(user_args['end_date'])
+        generate_extraction_metrics(user_args['end_date'], input_tickers=user_args['tickers'])
     except KeyboardInterrupt:
-        logger.warning('Detected keyboard interruption from the user, terminating program...')
-        print('Detected keyboard interruption from the user, terminating program...')
+        _message = 'Detected keyboard interruption from the user, terminating program...'
+        logger.warning(_message)
+        stderr.write(f'{_message}\n')
     except Exception as e:
-        logger.critical(f'Program crashed, Error: {e}')
-        print(f'Error: {e}')
-        if user_args['debug']:
-            raise e
+        _message = f'Program crashed, Error: {e}'
+        logger.critical(_message, exc_info=True)
+        stderr.write(f'{_message}\n')
+        # if user_args['debug']:
+        #     raise e
+    stderr.flush()
+    stdout.flush()
 
 
 if __name__ == '__main__':
