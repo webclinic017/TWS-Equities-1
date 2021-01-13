@@ -4,11 +4,11 @@
     Historical data extractor, written around TWS API(reqHistoricalData)
 """
 
-from tws_clients import TWSWrapper
-from tws_clients import TWSClient
-from helpers import create_stock
-from helpers import get_logger
-from helpers import make_dirs
+from tws_equities.tws_clients import TWSWrapper
+from tws_equities.tws_clients import TWSClient
+from tws_equities.helpers import create_stock
+from tws_equities.helpers import get_logger
+from tws_equities.helpers import make_dirs
 from json import dumps
 from os.path import dirname
 from os.path import isfile

@@ -1,5 +1,5 @@
 from alive_progress import alive_bar
-from helpers import BAR_CONFIG as _BAR_CONFIG
+from tws_equities.helpers import BAR_CONFIG as _BAR_CONFIG
 
 from os.path import dirname
 from os.path import isdir

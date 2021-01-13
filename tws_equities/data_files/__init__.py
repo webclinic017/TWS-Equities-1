@@ -6,13 +6,13 @@ import pandas as pd
 from json import dumps
 import sys
 
-from data_files.input_data import get_input_tickers
-from data_files.input_data import load_csv
-from data_files.input_data import get_japan_indices
-from data_files.input_data import drop_unnamed_columns
-from data_files.input_data import TEST_TICKERS
+from tws_equities.data_files.input_data import get_input_tickers
+from tws_equities.data_files.input_data import load_csv
+from tws_equities.data_files.input_data import get_japan_indices
+from tws_equities.data_files.input_data import drop_unnamed_columns
+from tws_equities.data_files.input_data import TEST_TICKERS
 
-from data_files.historical_data import create_csv_dump
+from tws_equities.data_files.historical_data import create_csv_dump
 
 
 _ROOT_DIRECTORY = dirname(__file__)
@@ -23,17 +23,17 @@ _JAPAN_INDICES = get_japan_indices()
 _N_225_TICKERS = _JAPAN_INDICES[_JAPAN_INDICES.n_225 != ''].n_225.apply(lambda x: int(x.split('.')[0])).tolist()
 _TOPIX_TICKERS = _JAPAN_INDICES[_JAPAN_INDICES.topix != ''].topix.apply(lambda x: int(x.split('.')[0])).tolist()
 _JASDAQ_20_TICKERS = _JAPAN_INDICES[_JAPAN_INDICES.jasdaq_20 != ''].jasdaq_20.apply(lambda x: int(x.split('.')[
-                                                                                                   0])).tolist()
+                                                                                                      0])).tolist()
 
 _EXPECTED_METRICS = [
-                        'total_tickers', 'total_extracted',
-                        'extraction_successful', 'extraction_failure',
-                        'success_ratio', 'failure_ratio',
-                        'n_225_success_ratio', 'n_225_failure_ratio',
-                        'topix_success_ratio', 'topix_failure_ratio',
-                        'jasdaq_20_success_ratio', 'jasdaq_20_failure_ratio',
-                        'missing_tickers_ratio', 'missing_tickers'
-                     ]
+    'total_tickers', 'total_extracted',
+    'extraction_successful', 'extraction_failure',
+    'success_ratio', 'failure_ratio',
+    'n_225_success_ratio', 'n_225_failure_ratio',
+    'topix_success_ratio', 'topix_failure_ratio',
+    'jasdaq_20_success_ratio', 'jasdaq_20_failure_ratio',
+    'missing_tickers_ratio', 'missing_tickers'
+]
 _METRICS = dict(zip(_EXPECTED_METRICS, [None]*len(_EXPECTED_METRICS)))
 
 

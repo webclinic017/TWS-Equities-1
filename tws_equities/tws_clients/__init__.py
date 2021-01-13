@@ -1,10 +1,10 @@
 from sys import stdout
 from alive_progress import alive_bar
-from helpers import BAR_CONFIG as _BAR_CONFIG
+from tws_equities.helpers import BAR_CONFIG as _BAR_CONFIG
 
-from tws_clients.base import TWSWrapper
-from tws_clients.base import TWSClient
-from tws_clients.data_extractor import HistoricalDataExtractor
+from tws_equities.tws_clients.base import TWSWrapper
+from tws_equities.tws_clients.base import TWSClient
+from tws_equities.tws_clients.data_extractor import HistoricalDataExtractor
 
 
 _BATCH_SIZE = 30

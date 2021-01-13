@@ -1,6 +1,6 @@
-from helpers.logger_setup import get_logger
-from helpers.contract_maker import create_stock
-from helpers.utils import make_dirs
+from tws_equities.helpers.logger_setup import get_logger
+from tws_equities.helpers.contract_maker import create_stock
+from tws_equities.helpers.utils import make_dirs
 
 
 BAR_CONFIG = {
