@@ -15,7 +15,6 @@ from data_files.input_data import TEST_TICKERS
 from data_files.historical_data import create_csv_dump
 
 
-
 _ROOT_DIRECTORY = dirname(__file__)
 _PATH_TO_HISTORICAL_DATA = join(_ROOT_DIRECTORY, 'historical_data')
 

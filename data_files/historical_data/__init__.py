@@ -1,11 +1,11 @@
 from alive_progress import alive_bar
 from helpers import BAR_CONFIG as _BAR_CONFIG
 
-from data_files import dirname
-from data_files import isdir
-from data_files import join
-from data_files import listdir
-from data_files import pd
+from os.path import dirname
+from os.path import isdir
+from os.path import join
+from os import listdir
+import pandas as pd
 
 import json
 import sys
