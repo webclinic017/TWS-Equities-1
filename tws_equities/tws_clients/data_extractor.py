@@ -244,7 +244,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
                 self._log_message(f'Extracting data for: {_target_ticker}', level='info')
                 self._request_historical_data(_target_ticker)
             else:
-                self._create_data_dump(_target_ticker, self.data[_target_ticker])
+                # self._create_data_dump(_target_ticker, self.data[_target_ticker])
                 self._proccesed_tickers.append(_target_ticker)
                 self.extract_historical_data()
         else:
@@ -277,7 +277,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
         self.data[id]['meta_data']['end'] = end
         self.data[id]['meta_data']['status'] = True
         self.data[id]['meta_data']['total_bars'] = len(self.data[id]['bar_data'])
-        self._create_data_dump(id, self.data[id])
+        # self._create_data_dump(id, self.data[id])
         self._proccesed_tickers.append(id)
         self.extract_historical_data()
 
@@ -316,7 +316,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
             meta_data['_error_stack'].append(error)
 
             if attempts >= self.max_attempts:
-                self._create_data_dump(id, self.data[id])
+                # self._create_data_dump(id, self.data[id])
                 self._proccesed_tickers.append(id)
 
             # -1 indicates a timeout

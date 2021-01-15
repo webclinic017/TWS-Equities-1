@@ -1,14 +1,17 @@
-import pandas as pd
 from os.path import isfile
 from os.path import dirname
 from os.path import join
+from os.path import sep
+import pandas as pd
+
+
+# TODO: load test tickers from a function call
+# TODO: better error handling against user input
 
 
 _ROOT_DIRECTORY = dirname(__file__)
-
-_PATH_TO_INPUT_TICKERS = join(_ROOT_DIRECTORY, 'tickers.csv')
 _PATH_TO_JAPAN_INDICES = join(_ROOT_DIRECTORY, 'japan_indices.csv')
-
+PATH_TO_DEFAULT_TICKERS = join(_ROOT_DIRECTORY, 'tickers.csv')
 TEST_TICKERS = [
                     1301,
                     1332,
@@ -72,6 +75,10 @@ TEST_TICKERS = [
                 ]
 
 
+def _get_file_extension(file_path):
+    return file_path.split(sep)[-1].split('.')[-1]
+
+
 def _is_dataframe(_object):
     """
         Raises a type error if a given object is not a pandas dataframe.
@@ -106,49 +113,51 @@ def _format_column_names(data_frame):
     return data_frame
 
 
-def validate_target_file(file_path):
+def _validate_target_file(file_path, expected_file_type='csv'):
     """
         Validates that file is CSV and present on the given location.
         :param file_path: location of the data file
         :return: None
     """
-    supported_file_types = ['csv']
-    file_type = file_path.split('.')[-1]
-    if file_type not in supported_file_types:
-        raise TypeError(f'Data file must be CSV, received: {file_type}')
+    if not(isinstance(expected_file_type, str)):
+        raise TypeError(f'Expected file type can not be: {expected_file_type}')
+    file_type = _get_file_extension(file_path)
+    if file_type != expected_file_type:
+        raise TypeError(f'Data file must be {expected_file_type.upper()}, received: {file_type}')
     if not(isfile(file_path)):
         raise FileNotFoundError(f'File: {file_path} does not exist.')
 
 
-def load_csv(file_path=None):
-    """
-        Loads ticker data from a CSV file.
-        :param file_path: path to CSV file, defaults='tickers.csv'
-        :return: list of tickers
-    """
-    # TODO: add a logger
-    if file_path is None:
-        file_path = _PATH_TO_INPUT_TICKERS
-    validate_target_file(file_path)
-    csv = pd.read_csv(file_path)
-    # TODO: user specified file may not have an ecode column
-    return csv.ecode.tolist()
+def _read_csv(file_path):
+    _validate_target_file(file_path, expected_file_type='csv')
+    return pd.read_csv(file_path)
 
 
-def get_input_tickers():
-    return load_csv()
+def _load_tickers_from_a_file(file_path):
+    data = _read_csv(file_path)
+    columns = data.columns
+    if 'ecode' not in columns:
+        raise ValueError(f'User specified input file does not have a column called "ecode".')
+    return data.ecode.tolist()
+
+
+def get_default_tickers():
+    return _load_tickers_from_a_file(PATH_TO_DEFAULT_TICKERS)
+
+
+def get_tickers_from_user_file(file_path):
+    return _load_tickers_from_a_file(file_path)
 
 
 def get_japan_indices():
     """
         Loads, cleans & returns japan_indices.csv
     """
-    if not isfile(_PATH_TO_JAPAN_INDICES):
-        raise FileNotFoundError(f'Can not find Japan Indices file at: {_PATH_TO_JAPAN_INDICES}')
-    csv = pd.read_csv(_PATH_TO_JAPAN_INDICES)
-    csv = _drop_unnamed_columns(csv)
-    csv.fillna('', inplace=True)
-    return csv
+    _validate_target_file(_PATH_TO_JAPAN_INDICES, expected_file_type='csv')
+    data = _read_csv(_PATH_TO_JAPAN_INDICES)
+    data = _drop_unnamed_columns(data)
+    data.fillna('', inplace=True)
+    return data
 
 
 drop_unnamed_columns = _drop_unnamed_columns

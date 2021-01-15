@@ -1,13 +1,18 @@
+from os.path import dirname
+from os.path import join
 from sys import stdout
 from alive_progress import alive_bar
-from tws_equities.helpers import BAR_CONFIG as _BAR_CONFIG
 
+from tws_equities.helpers import BAR_CONFIG as _BAR_CONFIG
 from tws_equities.tws_clients.base import TWSWrapper
 from tws_equities.tws_clients.base import TWSClient
 from tws_equities.tws_clients.data_extractor import HistoricalDataExtractor
 
 
+# TODO: find a better way to do this
 _BATCH_SIZE = 30
+_PROJECT_ROOT = dirname(dirname(dirname(__file__)))
+_PATH_TO_HISTORICAL_DATA = join(_PROJECT_ROOT, 'historical_data')
 
 
 def batch_maker(tickers, size):
@@ -77,7 +82,6 @@ def extract_historical_data(tickers=(), end_date='20201231', end_time='15:01:00'
             bar()  # update progress bar
 
     stdout.write('\n')
-    stdout.flush()
 
 
 if __name__ == '__main__':

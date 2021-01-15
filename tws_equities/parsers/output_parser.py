@@ -1,5 +1,5 @@
 import pandas as pd
-from helpers import make_dirs
+from tws_equities.helpers import make_dirs
 from os.path import join
 
 

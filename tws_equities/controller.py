@@ -33,26 +33,27 @@
 from sys import stderr
 from sys import stdout
 
-from data_files import create_csv_dump
-from data_files import generate_extraction_metrics
-from helpers import get_logger
-from parsers import parse_user_args
-from tws_clients import extract_historical_data
+from tws_equities.data_files import create_csv_dump
+from tws_equities.data_files import generate_extraction_metrics
+from tws_equities.helpers import get_logger
+from tws_equities.parsers import parse_user_args
+from tws_equities.tws_clients import extract_historical_data
 
 
-def setup_logger(args):
+def setup_logger(name, verbose=False, debug=False):
     """
-        Setup & return a logger for the current run.
+        Setup & return a logger object.
     """
-    level = 'INFO' if args['debug'] else (
-            'WARNING' if args['verbose'] else 'ERROR')
-    logger = get_logger(__name__, level)
+    level = 'DEBUG' if debug else ('INFO' if verbose else 'WARNING')
+    logger = get_logger(name, level)
     return logger
 
 
 def main():
     user_args = vars(parse_user_args())
     logger = setup_logger(user_args)
+    print('Early exit...')
+    exit(0)
     try:
         extract_historical_data(**user_args)
         create_csv_dump(user_args['end_date'])
@@ -69,6 +70,22 @@ def main():
         #     raise e
     stderr.flush()
     stdout.flush()
+
+
+def download(**kwargs):
+    extract_historical_data(**kwargs)
+
+
+def convert(**kwargs):
+    print(f'Convert: {kwargs}')
+
+
+def metrics(**kwargs):
+    print(f'Metrics: {kwargs}')
+
+
+def run(**kwargs):
+    download(**kwargs)
 
 
 if __name__ == '__main__':
