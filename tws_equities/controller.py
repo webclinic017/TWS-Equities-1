@@ -36,6 +36,7 @@ from sys import stdout
 from tws_equities.data_files import create_csv_dump
 from tws_equities.data_files import generate_extraction_metrics
 from tws_equities.helpers import get_logger
+from tws_equities.helpers import get_date_range
 from tws_equities.parsers import parse_user_args
 from tws_equities.tws_clients import extract_historical_data
 
@@ -76,8 +77,13 @@ def download(**kwargs):
     extract_historical_data(**kwargs)
 
 
-def convert(**kwargs):
-    print(f'Convert: {kwargs}')
+def convert(tickers=None, start_date=None, end_date=None):
+    print('----------Convert')
+    print(f'T: {tickers}')
+    print(f'S: {start_date}')
+    print(f'E: {end_date}')
+
+    print(f'--=-=-=-=-=-=- COnvert end!!')
 
 
 def metrics(**kwargs):
@@ -86,6 +92,8 @@ def metrics(**kwargs):
 
 def run(**kwargs):
     download(**kwargs)
+    tickers, start_date, end_date = kwargs.get('tickers'), kwargs.get('start_date'), kwargs.get('end_date')
+    convert(tickers=tickers, start_date=start_date, end_date=end_date)
 
 
 if __name__ == '__main__':

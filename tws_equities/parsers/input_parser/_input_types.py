@@ -6,7 +6,7 @@ from os.path import join
 from os.path import sep
 
 
-class _EndDate:
+class _Date:
 
     def __call__(self, end_date):
         _err = 'Expected a date-like string, format: "YYYYMMDD" (Ex: "20210101")'
@@ -21,10 +21,10 @@ class _EndDate:
         return end_date
 
 
-class _EndTime:
+class _Time:
 
     def __call__(self, end_time):
-        _err = 'Expected a time-like string in 24-hour format: "HH:MM:SS (Ex: "15:01:00")"'
+        _err = 'Expected a time-like string in 24-hour format: "HH:MM:SS"'
         try:
             dt.strptime(end_time, '%H:%M:%S')
         except:
@@ -116,8 +116,8 @@ class _URL:
 
 
 INPUT_TYPES = {
-                    'end_date': _EndDate(),
-                    'end_time': _EndTime(),
+                    'date': _Date(),
+                    'time': _Time(),
                     'duration': _Duration(),
                     'bar_size': _BarSize(),
                     'file': _File(),

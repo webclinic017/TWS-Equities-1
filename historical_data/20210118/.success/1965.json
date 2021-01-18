@@ -1,0 +1,67 @@
+{
+ "bar_data": [
+  {
+   "average": 893.9,
+   "close": 897.0,
+   "count": 8,
+   "high": 897.0,
+   "low": 893.0,
+   "open": 893.0,
+   "session": 1,
+   "time_stamp": "20210118  09:00:00",
+   "volume": 3900
+  },
+  {
+   "average": 900.0,
+   "close": 900.0,
+   "count": 1,
+   "high": 900.0,
+   "low": 900.0,
+   "open": 900.0,
+   "session": 1,
+   "time_stamp": "20210118  09:01:00",
+   "volume": 100
+  },
+  {
+   "average": 900.0,
+   "close": 900.0,
+   "count": 0,
+   "high": 900.0,
+   "low": 900.0,
+   "open": 900.0,
+   "session": 1,
+   "time_stamp": "20210118  09:02:00",
+   "volume": 0
+  },
+  {
+   "average": 899.2,
+   "close": 896.0,
+   "count": 4,
+   "high": 900.0,
+   "low": 896.0,
+   "open": 900.0,
+   "session": 1,
+   "time_stamp": "20210118  09:03:00",
+   "volume": 500
+  },
+  {
+   "average": 898.8,
+   "close": 894.0,
+   "count": 5,
+   "high": 900.0,
+   "low": 894.0,
+   "open": 900.0,
+   "session": 1,
+   "time_stamp": "20210118  09:04:00",
+   "volume": 500
+  }
+ ],
+ "meta_data": {
+  "_error_stack": [],
+  "attempts": 1,
+  "end": "20210118  09:05:00",
+  "start": "20210117  09:05:00",
+  "status": true,
+  "total_bars": 5
+ }
+}

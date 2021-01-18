@@ -14,11 +14,15 @@ _URL_ACTION = TICKER_ACTIONS['url']
 # to provide users with new options, add a dictionary objec:with in the section below
 # these objects will serve as optional arguments
 # options built for downloader
-_END_DATE = dict(name='--end-date', flag='-ed', type=INPUT_TYPES['end_date'], default=_CURRENT_DATE,
+_START_DATE = dict(name='--start-date', flag='-sd', type=INPUT_TYPES['date'], default=_CURRENT_DATE,
+                   dest='start_date', help='Start date for data extraction, default is None.'
+                                         '(Expected format: "YYYYMMDD")')
+
+_END_DATE = dict(name='--end-date', flag='-ed', type=INPUT_TYPES['date'], default=_CURRENT_DATE,
                  dest='end_date', help='End date for data extraction, default is current date.'
                                        '(Expected format: "YYYYMMDD")')
 
-_END_TIME = dict(name='--end-time', flag='-et', type=INPUT_TYPES['end_time'], default='15:01:00',
+_END_TIME = dict(name='--end-time', flag='-et', type=INPUT_TYPES['time'], default='15:01:00',
                  dest='end_time', help='End time for data extraction, default is "15:01:00".'
                                        '(Expected format: "HH:MM:SS")')
 
@@ -73,9 +77,8 @@ _TICKERS = dict(help='Use this command to pass custom ticker ID(s) as an input t
 
 
 # building config for run command
-_OPTIONAL_ARGUMENTS = dict(end_date=_END_DATE, end_time=_END_TIME, duration=_DURATION,
-                           bar_size=_BAR_SIZE, what_to_show=_WHAT_TO_SHOW,
-                           use_rth=_USE_RTH)
+_OPTIONAL_ARGUMENTS = dict(start_date=_START_DATE, end_date=_END_DATE, end_time=_END_TIME, duration=_DURATION,
+                           bar_size=_BAR_SIZE, what_to_show=_WHAT_TO_SHOW, use_rth=_USE_RTH)
 _POSITIONAL_ARGUMENTS = dict(tickers=_TICKERS)
 _RUN = dict(help='Use this command to trigger a complete run that would download bar-data, convert & save it '
                  'to a CSV file and finally present the user with extraction metrics.',
