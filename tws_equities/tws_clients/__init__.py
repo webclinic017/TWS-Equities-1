@@ -4,7 +4,7 @@ from os.path import join
 from os import listdir
 from sys import stdout
 
-from time import sleep
+# from time import sleep
 
 from tws_equities.helpers import BAR_CONFIG as _BAR_CONFIG
 from tws_equities.tws_clients.base import TWSWrapper
@@ -63,7 +63,7 @@ def _get_unprocessed_tickers(tickers, success_directory, failure_directory):
 
 
 def _prep_for_extraction(tickers, target_date):
-    stdout.write(f'=> Setting things up for extraction for: {target_date}\n')
+    # stdout.write(f'=> Setting things up for extraction for: {target_date}\n')
 
     # form data caching directory
     cache_directory = join(_PATH_TO_HISTORICAL_DATA, target_date)
@@ -75,17 +75,17 @@ def _prep_for_extraction(tickers, target_date):
     # create cache directory for failure
     cache_failure = join(cache_directory, '.failure')
     make_dirs(cache_failure)
-    stdout.write(f'\t-> Cache directies created...\n')
+    # stdout.write(f'\t-> Cache directies created...\n')
 
     # save tickers for later use
     path_input_tickers = join(cache_directory, 'input_tickers.json')
     save_data_as_json(tickers, path_input_tickers, indent=0)
-    stdout.write(f'\t-> Cached target tickers...\n')
+    # stdout.write(f'\t-> Cached target tickers...\n')
 
     # extract tickers that are yet to be processed
     tickers = _get_unprocessed_tickers(tickers, cache_success, cache_failure)
-    stdout.write(f'\t-> Excluded already processed tickers...\n')
-    stdout.write(f'\t-> Total target tickers: {len(tickers)}\n')
+    # stdout.write(f'\t-> Excluded already processed tickers...\n')
+    # stdout.write(f'\t-> Total target tickers: {len(tickers)}\n')
 
     return tickers, cache_success, cache_failure
 
@@ -101,7 +101,7 @@ def _extractor(tickers, end_date, end_time, duration, bar_size, what_to_show, us
 
 
 def _run_extractor(batches, end_date, end_time, duration, bar_size, what_to_show, use_rth, date_format,
-                   keep_upto_date, chart_options, batch_size, cache_success, cache_failure):
+                   keep_upto_date, chart_options, cache_success, cache_failure):
     total = len(batches)
     stdout.write('=> Extraction in progress, this can take some time time. Please wait...\n')
     with alive_bar(total=total, **_BAR_CONFIG) as bar:
@@ -114,6 +114,7 @@ def _run_extractor(batches, end_date, end_time, duration, bar_size, what_to_show
     return listdir(cache_success), listdir(cache_failure)
 
 
+# noinspection PyUnusedLocal
 def _cleanup(success_files, success_directory, failure_files, failure_directory):
     stdout.write(f'=> Post-extraction cleanup initiated...\n')
     common_files = list(set(success_files).intersection(failure_files))
@@ -152,14 +153,14 @@ def extract_historical_data(tickers=None, start_date=None, end_date=None, end_ti
     """
     stdout.write(f'\n{"-"*40} Init Extraction {"-"*40}\n')
     date_range = get_date_range(start_date, end_date)
-    batches = create_batches(tickers, batch_size)
     for target_date in date_range:
         tickers, cache_success, cache_failure = _prep_for_extraction(tickers, target_date)
+        batches = create_batches(tickers, batch_size)
         success_files, failure_files = _run_extractor(batches, target_date, end_time, duration, bar_size,
                                                       what_to_show, use_rth, date_format, keep_upto_date,
-                                                      chart_options, batch_size, cache_success, cache_failure)
+                                                      chart_options, cache_success, cache_failure)
         _cleanup(success_files, cache_success, failure_files, cache_failure)
-        stdout.write(f'=> Extraction completed for: {target_date}\n')
+        # stdout.write(f'=> Extraction completed for: {target_date}\n')
         stdout.write(f'\n{"-"*100}\n\n')
     # its_a_bad_news = not _sanity_check(tickers, success_files, cache_success, failure_files, cache_failure)
     # if its_a_bad_news:

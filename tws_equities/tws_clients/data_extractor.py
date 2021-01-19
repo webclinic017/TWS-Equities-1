@@ -60,7 +60,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
             Should be invoked for every new ticker.
         """
         _meta_data = {'start': None, 'end': None, 'status': False, 'attempts': 0,
-                      '_error_stack': [], 'total_bars': 0}
+                      '_error_stack': [], 'total_bars': 0, 'ecode': ticker}
         _initial_data = {'meta_data': _meta_data, 'bar_data': []}
         self.data[ticker] = _initial_data
 

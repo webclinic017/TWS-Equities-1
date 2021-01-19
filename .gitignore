@@ -4,6 +4,10 @@
 *.xml
 *.html
 
+# historical data
+historical_data/
+
+
 <<<<<<< HEAD
 
 =======

@@ -78,12 +78,15 @@ def download(**kwargs):
 
 
 def convert(tickers=None, start_date=None, end_date=None):
-    print('----------Convert')
-    print(f'T: {tickers}')
-    print(f'S: {start_date}')
-    print(f'E: {end_date}')
-
-    print(f'--=-=-=-=-=-=- COnvert end!!')
+    if end_date is None:
+        raise ValueError(f'User must pass at least the end date for data conversion.')
+    if start_date is None:
+        start_date = end_date
+    if tickers is None:
+        pass
+    date_range = get_date_range(start_date, end_date)
+    for date in date_range:
+        create_csv_dump(date)
 
 
 def metrics(**kwargs):
@@ -97,4 +100,4 @@ def run(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    convert(end_date='20210118')
