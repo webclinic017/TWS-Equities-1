@@ -4,8 +4,8 @@
 from tws_equities import parse_user_args
 from tws_equities import setup_logger
 from tws_equities import COMMAND_MAP
-# from json import dumps
 import sys
+from json import dumps
 
 _RED_CROSS = u'\u274C'
 _GREEN_TICK = u'\u2705'
@@ -37,8 +37,8 @@ def main():
         _message = f'Program Crashed: {e}'
         sys.stderr.write(f'{_RED_CROSS} {_message}\n')
         logger.critical(_message, exc_info=True)
-        if debug:
-            raise e
+        # if debug:
+        raise e
     sys.stderr.flush()
     sys.stdout.flush()
 

@@ -7,8 +7,9 @@
                         TWS: Equities Data Extractor
                         ----------------------------
     This module is the main controller built around "HistoricalDataExtractor"
-    client. It intends to provides a Command Line Interface (CLI) using
-    Python's "argparse" module(https://docs.python.org/3/library/argparse.html).
+    client. It intends to provides a Command Line Interface (CLI), using
+    Python's "argparse" module(https://docs.python.org/3/library/argparse.html),
+    to extract historical bar data for Japanese Equities.
 
     Sample Commands:
     ---------------

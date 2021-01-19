@@ -138,7 +138,7 @@ def _load_tickers_from_a_file(file_path):
     columns = data.columns
     if 'ecode' not in columns:
         raise ValueError(f'User specified input file does not have a column called "ecode".')
-    return data.ecode.tolist()
+    return data[~data.ecode.isna()].ecode.astype(int).tolist()
 
 
 def get_default_tickers():

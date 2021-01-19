@@ -103,12 +103,17 @@ def _extractor(tickers, end_date, end_time, duration, bar_size, what_to_show, us
 def _run_extractor(batches, end_date, end_time, duration, bar_size, what_to_show, use_rth, date_format,
                    keep_upto_date, chart_options, cache_success, cache_failure):
     total = len(batches)
+    data = {}
     stdout.write('=> Extraction in progress, this can take some time time. Please wait...\n')
     with alive_bar(total=total, **_BAR_CONFIG) as bar:
-        for batch in batches:
-            data = _extractor(batch, end_date, end_time, duration, bar_size, what_to_show,
+        for i in range(total):
+            if i % 10 == 0 or i+1 == total:
+                _cache_data(data, cache_success, cache_failure)
+                data = {}
+            batch = batches[i]
+            temp = _extractor(batch, end_date, end_time, duration, bar_size, what_to_show,
                               use_rth, date_format, keep_upto_date, chart_options)
-            _cache_data(data, cache_success, cache_failure)
+            data.update(temp)
             bar()  # update progress bar
     # return success & failure files
     return listdir(cache_success), listdir(cache_failure)

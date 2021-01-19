@@ -1,2 +1,1 @@
 from tws_equities.parsers.input_parser import parse_user_args
-from tws_equities.parsers.output_parser import save_to_csv
