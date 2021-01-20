@@ -4,23 +4,23 @@
     Historical data extractor, written around TWS API(reqHistoricalData)
 """
 
-from tws_clients import TWSWrapper
-from tws_clients import TWSClient
-from helpers import create_stock
-from helpers import get_logger
-from helpers import make_dirs
+from tws_equities.tws_clients import TWSWrapper
+from tws_equities.tws_clients import TWSClient
+from tws_equities.helpers import create_stock
+from tws_equities.helpers import get_logger
+from tws_equities.helpers import make_dirs
 from json import dumps
-from os.path import dirname
-from os.path import isfile
-from os.path import join
-from os import walk
+# from os.path import dirname
+# from os.path import isfile
+# from os.path import join
+# from os import walk
 from os import name as os_name
 from itertools import chain
 import signal
 
 
 OS_IS_UNIX = os_name == 'posix'
-PROJECT_DIRECTORY = dirname(dirname(__file__))
+# PROJECT_DIRECTORY = dirname(dirname(__file__))
 _LOGGER = get_logger(__name__)
 flatten = chain.from_iterable
 
@@ -29,8 +29,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
 
     def __init__(self, end_date='20210101', end_time='15:01:00', duration='1 D', bar_size='1 min',
                  what_to_show='TRADES', use_rth=1, date_format=1, keep_upto_date=False, chart_options=(),
-                 create_data_dump=False, output_location=None, verbose=False, debug=False, logger=None,
-                 timeout=3, max_attempts=3):
+                 logger=None, timeout=3, max_attempts=3):
         TWSWrapper.__init__(self)
         TWSClient.__init__(self, wrapper=self)
         self.ticker = None
@@ -51,13 +50,6 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
         self.keep_upto_date = keep_upto_date
         self.chart_options = chart_options
         self.timeout = timeout
-        self.create_data_dump = create_data_dump
-        self.verbose = verbose
-        self.debug = debug
-        self.output_location = output_location or join(PROJECT_DIRECTORY,
-                                                       'data_files',
-                                                       'historical_data',
-                                                       self.end_date)
         self.logger = logger or _LOGGER
         self.max_attempts = max_attempts
         self.data = None
@@ -68,7 +60,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
             Should be invoked for every new ticker.
         """
         _meta_data = {'start': None, 'end': None, 'status': False, 'attempts': 0,
-                      '_error_stack': [], 'output_file': '', 'total_bars': 0}
+                      '_error_stack': [], 'total_bars': 0, 'ecode': ticker}
         _initial_data = {'meta_data': _meta_data, 'bar_data': []}
         self.data[ticker] = _initial_data
 
@@ -97,7 +89,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
                             'critical': self.logger.critical
                         }
             log = level_map.get(level, 'error')
-            log(message, exc_info=self.debug)
+            log(message)
 
     def _set_timeout(self, ticker):
         """
@@ -122,26 +114,27 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
         end_date_time = f'{self.end_date} {self.end_time}'
         self._log_message(f'Requesting historical data for ticker: {ticker}', level='info')
         self.data[ticker]['meta_data']['attempts'] += 1
-        self.reqHistoricalData(ticker, contract, end_date_time, self.duration, self.bar_size, self.what_to_show,
-                               self.use_rth, self.date_format, self.keep_upto_date, self.chart_options)
+        self.reqHistoricalData(ticker, contract, end_date_time, self.duration, self.bar_size,
+                               self.what_to_show, self.use_rth, self.date_format, self.keep_upto_date,
+                               self.chart_options)
 
-    def _create_data_dump(self, ticker, data):
-        """
-            Evaluates extraction status and saves ticker data to relevant file.
-            :param ticker: ticker ID
-            :param data: historical data in a dictionary
-        """
-        if self.create_data_dump:
-            status_directory = 'success' if data['meta_data']['status'] else 'failure'
-            target_directory = join(self.output_location, status_directory)
-            target_file = join(target_directory, f'{ticker}.json')
-            self.directory_maker(target_directory)
-            self.data[ticker]['meta_data']['output_file'] = target_file
-            data_has_not_been_saved = not((isfile(target_file)) or (isfile(join(self.output_location,
-                                                                                'success',
-                                                                                f'{ticker}.json'))))
-            if data_has_not_been_saved:
-                self.save_ticker_file(data, target_file)
+    # def _create_data_dump(self, ticker, data):
+    #     """
+    #         Evaluates extraction status and saves ticker data to relevant file.
+    #         :param ticker: ticker ID
+    #         :param data: historical data in a dictionary
+    #     """
+    #     if self.create_data_dump:
+    #         status_directory = 'success' if data['meta_data']['status'] else 'failure'
+    #         target_directory = join(self.output_location, status_directory)
+    #         target_file = join(target_directory, f'{ticker}.json')
+    #         self.directory_maker(target_directory)
+    #         self.data[ticker]['meta_data']['output_file'] = target_file
+    #         data_has_not_been_saved = not((isfile(target_file)) or (isfile(join(self.output_location,
+    #                                                                             'success',
+    #                                                                             f'{ticker}.json'))))
+    #         if data_has_not_been_saved:
+    #             self.save_ticker_file(data, target_file)
 
     def save_ticker_file(self, data, file_path):
         """
@@ -161,39 +154,39 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
                 - Error data has been extracted and saved to failure location
         """
         meta_data = self.data[ticker]['meta_data']
-        data_dumped = isfile(join(self.output_location, 'success', f'{ticker}.json'))
+        # data_dumped = isfile(join(self.output_location, 'success', f'{ticker}.json'))
         status = meta_data['status']
         max_attempts_reached = meta_data['attempts'] >= self.max_attempts
-        return data_dumped or status or max_attempts_reached
+        return status or max_attempts_reached
 
-    def _get_processed_tickers(self):
-        """
-            Read output location and findout tickers for which data dump has been created.
-            :return: list of processed tickers
-        """
-        # get all tickers for which a data dump has been created
-        # success & failure directories, both are included
-        # get all files from self.output_location
-        # filter out files ending with .json
-        # split filename and convert to int, to get ticker ID
-        return list(
-                        map(lambda z: int(z.split('.')[0]),
-                            filter(lambda y: y.endswith('.json'),
-                                   flatten(map(lambda x: x[2],
-                                               walk(self.output_location)
-                                               )
-                                           )
-                                   )
-                            )
-                    )
+    # def _get_processed_tickers(self):
+    #     """
+    #         Read output location and findout tickers for which data dump has been created.
+    #         :return: list of processed tickers
+    #     """
+    #     get all tickers for which a data dump has been created
+    #     success & failure directories, both are included
+    #     get all files from self.output_location
+    #     filter out files ending with .json
+    #     split filename and convert to int, to get ticker ID
+        # return list(
+        #                 map(lambda z: int(z.split('.')[0]),
+        #                     filter(lambda y: y.endswith('.json'),
+        #                            flatten(map(lambda x: x[2],
+        #                                        walk(self.output_location)
+        #                                        )
+        #                                    )
+        #                            )
+        #                     )
+        #             )
 
-    def _get_target_ticker(self):
-        """
-            :return: First ticker from unprocessed tickers
-        """
-        unprocessed_tickers = list(set(self._target_tickers).difference(self._get_processed_tickers()))
-        if bool(unprocessed_tickers):
-            return unprocessed_tickers[0]
+    # def _get_target_ticker(self):
+    #     """
+    #         :return: First ticker from unprocessed tickers
+    #     """
+    #     unprocessed_tickers = list(set(self._target_tickers).difference(self._get_processed_tickers()))
+    #     if bool(unprocessed_tickers):
+    #         return unprocessed_tickers[0]
 
     def connect(self, host='127.0.0.1', port=7497, client_id=10):
         """
@@ -223,7 +216,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
             Note: User must connect to TWS API prior to calling this method.
         """
         if not self.is_connected:
-            raise ConnectionError(f'Not yet connected to TWS API, invoke "connect" method with valid arguments.')
+            raise ConnectionError(f'Not connected to TWS API, please launch TWS and enable API settings.')
         super().run()
 
     def extract_historical_data(self, tickers=None):
@@ -244,7 +237,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
                 self._log_message(f'Extracting data for: {_target_ticker}', level='info')
                 self._request_historical_data(_target_ticker)
             else:
-                self._create_data_dump(_target_ticker, self.data[_target_ticker])
+                # self._create_data_dump(_target_ticker, self.data[_target_ticker])
                 self._proccesed_tickers.append(_target_ticker)
                 self.extract_historical_data()
         else:
@@ -277,7 +270,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
         self.data[id]['meta_data']['end'] = end
         self.data[id]['meta_data']['status'] = True
         self.data[id]['meta_data']['total_bars'] = len(self.data[id]['bar_data'])
-        self._create_data_dump(id, self.data[id])
+        # self._create_data_dump(id, self.data[id])
         self._proccesed_tickers.append(id)
         self.extract_historical_data()
 
@@ -299,7 +292,8 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
             # error codes 2103, 2105, 2157 indicate broken connection
             if code in [2103, 2105, 2157]:
                 self._log_message(f'Insecure Connection: {message}, Error code: {code}', level='critical')
-                raise ConnectionError(f'Detected broken connection, please try re-connecting the webfarms in TWS.')
+                raise ConnectionError(f'Detected broken connection, please try re-connecting the webfarms '
+                                      f'in TWS.')
             # error codes 2104, 2106, 2158 indicate connection is OK
             if code in [2104, 2106, 2158]:
                 self._log_message(message, level='info')
@@ -316,7 +310,7 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
             meta_data['_error_stack'].append(error)
 
             if attempts >= self.max_attempts:
-                self._create_data_dump(id, self.data[id])
+                # self._create_data_dump(id, self.data[id])
                 self._proccesed_tickers.append(id)
 
             # -1 indicates a timeout
@@ -336,26 +330,8 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
 
 
 if __name__ == '__main__':
-    from time import time
-    from data_files.input_data import test_tickers
-
-    BATCH_SIZE = 25
-    start, end = 0, BATCH_SIZE
-    print(f'Target Tickers: {test_tickers}')
-    TOTAL = len(test_tickers)
-    print(f'Total Tickers: {TOTAL}')
-    start_time = time()
-    for i in range(0, TOTAL, BATCH_SIZE):
-        extractor = HistoricalDataExtractor(end_date='20210112',
-                                            end_time='15:01:00',
-                                            create_data_dump=True,
-                                            timeout=3,
-                                            debug=True)
-        batch = test_tickers[start:end]
-        extractor.extract_historical_data(batch)
-        print(f'Processed: {end}')
-        start += BATCH_SIZE
-        end += BATCH_SIZE
-    end_time = time()
-    lapsed = round(end_time - start_time, 3)
-    print(f'Time Lapsed: {lapsed} seconds')
+    import json
+    tickers = [1301]
+    extractor = HistoricalDataExtractor(end_date='20210120', end_time='09:01:00')
+    extractor.extract_historical_data(tickers)
+    print(json.dumps(extractor.data, indent=1, sort_keys=True))
