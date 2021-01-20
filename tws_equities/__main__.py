@@ -5,10 +5,11 @@ from tws_equities import parse_user_args
 from tws_equities import setup_logger
 from tws_equities import COMMAND_MAP
 import sys
-from json import dumps
+# from json import dumps
 
 _RED_CROSS = u'\u274C'
 _GREEN_TICK = u'\u2705'
+
 # load user input
 user_args = parse_user_args()
 # print(dumps(user_args, indent=1, sort_keys=True))
@@ -37,8 +38,9 @@ def main():
         _message = f'Program Crashed: {e}'
         sys.stderr.write(f'{_RED_CROSS} {_message}\n')
         logger.critical(_message, exc_info=True)
-        # if debug:
-        raise e
+        if debug:
+            raise e
+    # TODO: run final cleanup here
     sys.stderr.flush()
     sys.stdout.flush()
 

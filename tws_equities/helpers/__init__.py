@@ -1,3 +1,5 @@
+from os.path import dirname
+
 from tws_equities.helpers.utils import *
 from tws_equities.helpers.logger_setup import get_logger
 from tws_equities.helpers.contract_maker import create_stock
@@ -12,6 +14,8 @@ from tws_equities.helpers.contract_maker import create_stock
 # from tws_equities.helpers.utils import delete_directory
 
 
+PROJECT_ROOT = dirname(dirname(dirname(__file__)))
+HISTORICAL_DATA_STORAGE = join(PROJECT_ROOT, 'historical_data')
 BAR_CONFIG = {
                 'title': '=> Status∶',
                 'calibrate': 5,

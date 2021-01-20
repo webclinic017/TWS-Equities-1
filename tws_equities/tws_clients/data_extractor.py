@@ -330,4 +330,8 @@ class HistoricalDataExtractor(TWSWrapper, TWSClient):
 
 
 if __name__ == '__main__':
-    pass
+    import json
+    tickers = [1301]
+    extractor = HistoricalDataExtractor(end_date='20210120', end_time='09:01:00')
+    extractor.extract_historical_data(tickers)
+    print(json.dumps(extractor.data, indent=1, sort_keys=True))

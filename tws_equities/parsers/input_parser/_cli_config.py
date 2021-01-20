@@ -14,7 +14,7 @@ _URL_ACTION = TICKER_ACTIONS['url']
 # to provide users with new options, add a dictionary objec:with in the section below
 # these objects will serve as optional arguments
 # options built for downloader
-_START_DATE = dict(name='--start-date', flag='-sd', type=INPUT_TYPES['date'], default=_CURRENT_DATE,
+_START_DATE = dict(name='--start-date', flag='-sd', type=INPUT_TYPES['date'], default=None,
                    dest='start_date', help='Start date for data extraction, default is None.'
                                          '(Expected format: "YYYYMMDD")')
 
@@ -107,8 +107,7 @@ _UPLOAD = dict(help='Use this command to upload CSV files to a google drive loca
                optional_arguments=_OPTIONAL_ARGUMENTS, positional_arguments=_POSITIONAL_ARGUMENTS)
 
 # building config for download command
-_OPTIONAL_ARGUMENTS = dict(end_date=_END_DATE, data_location=_DATA_LOCATION, output_location=_OUTPUT_LOCATION,
-                           format=_FORMAT)
+_OPTIONAL_ARGUMENTS = dict(start_date=_START_DATE, end_date=_END_DATE)
 _POSITIONAL_ARGUMENTS = None  # dict(tickers=_TICKERS)
 _CONVERT = dict(help='Use this command to convert & save already downloaded data to a CSV file.',
                 description='Allows the user to convert & save downloaded JSON data to a CSV file.',
@@ -116,7 +115,7 @@ _CONVERT = dict(help='Use this command to convert & save already downloaded data
 
 
 # building config for download command
-_OPTIONAL_ARGUMENTS = dict(end_date=_END_DATE, data_location=_DATA_LOCATION)
+_OPTIONAL_ARGUMENTS = dict(start_date=_START_DATE, end_date=_END_DATE)
 _POSITIONAL_ARGUMENTS = None  # dict(tickers=_TICKERS)
 _METRICS = dict(help='Use this command to generate, display & save extraction metrics for a given date. ',
                 description='Allows the user to generate, display & save extraction metrics for a given '

@@ -104,13 +104,14 @@ def _drop_unnamed_columns(data_frame):
 
 def _format_column_names(data_frame):
     """
-        Converts all column names to lower case and replaces white space with underscore.
+        Converts all column names to lower case and replaces white space with an underscore.
+        Deletes all unnamed columns.
         :param data_frame: pandas data frame
         :return: same data frame with updated column names
     """
     if _is_dataframe(data_frame):
         data_frame.columns = list(map(lambda x: x.lower().replace(' ', '_'), data_frame.columns))
-    return data_frame
+    return _drop_unnamed_columns(data_frame)
 
 
 def _validate_target_file(file_path, expected_file_type='csv'):
@@ -130,15 +131,26 @@ def _validate_target_file(file_path, expected_file_type='csv'):
 
 def _read_csv(file_path):
     _validate_target_file(file_path, expected_file_type='csv')
-    return pd.read_csv(file_path)
+    return _format_column_names(pd.read_csv(file_path))
 
 
 def _load_tickers_from_a_file(file_path):
+    tickers = []
     data = _read_csv(file_path)
-    columns = data.columns
-    if 'ecode' not in columns:
-        raise ValueError(f'User specified input file does not have a column called "ecode".')
-    return data[~data.ecode.isna()].ecode.astype(int).tolist()
+    data_columns = data.columns.tolist()
+    target_columns = ['code', 'ecode', 'e_code', 'ticker_id']
+    common_columns = list(set(data_columns).intersection(target_columns))
+    target_columns_is_a_subset_of_data_columns = bool(common_columns)
+    if not target_columns_is_a_subset_of_data_columns:
+        raise ValueError(f'User specified an input file that does not have any column for tickers.')
+    if 'status' in data_columns:
+        active_statuses = ['A', 'a', 1, True]  # fixme: standardize
+        data = data[data.status.isin(active_statuses)]
+    for column in common_columns:
+        # not nan, convert to int, sort, extract unqiue & convert to python list
+        tickers = data[~data[column].isna()][column].astype(int).sort_values().unique().tolist()
+        break
+    return tickers
 
 
 def get_default_tickers():
@@ -155,7 +167,6 @@ def get_japan_indices():
     """
     _validate_target_file(_PATH_TO_JAPAN_INDICES, expected_file_type='csv')
     data = _read_csv(_PATH_TO_JAPAN_INDICES)
-    data = _drop_unnamed_columns(data)
     data.fillna('', inplace=True)
     return data
 

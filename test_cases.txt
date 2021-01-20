@@ -1,0 +1,61 @@
+- Testing "run" command:
+    - Simple run:
+        - Command:
+            - python -m tws_equities run ✅
+                - Validation points:
+                    - Load default list of tickers
+                    - Download bar data from TWS API for current date
+                    - Convert data to CSV
+                    - Generate relevant metrics
+    - Paramterized run:
+        - Acceptable parameters:
+            - start_date
+            - end_date
+            - end_time
+            - duration
+            - bar_size
+            - what_to_show
+            - use_rth
+        - Commands:
+            - python -m tws_equities run -ed 20201231 ✅
+                - Validation points:
+                    - Load default list of tickers
+                    - Download bar data for given date only
+                    - Convert data to CSV
+                    - Generate relevant metrics
+            - python -m tws_equities run -ed 20201231 -et 09:01:00 ✅
+                - Validation points:
+                    - Default tickers
+                    - Download bar data for given date and given time only(1 minute)
+                    - Convert data to CSV
+                    - Generate relevant metrics
+            - python -m tws_equities run -sd 20201227 -ed 20201231 -et 09:01:00 ✅
+                - Validation points:
+                    - Default tickers
+                    - Download bar data for gievn date range, 27-31 December
+                    - Convert data to CSV for each date
+                    - Generate relevant metrics for each date
+            - python -m tws_equities run -d '2 D' -b '5 min' ✅
+                - Validation points:
+                    - Default tickers
+                    - Download bar data for current date
+                    - Data should be split into 5 minute intervals
+                    - Data should start from T-2 days
+                    - Convert data to CSV
+                    - Generate relevant metrics
+    - Sub-Command:
+        - Acceptable sub-commands:
+            - tickers
+        - Command:
+            - python -m tws_equities run tickers -l 1301 1302 1303
+                - Validation points:
+                    - Tickers should be loaded from command line arguments
+                    - Download bar data for current with given ticker
+                    - Convert data to CSV
+                    - Generate relevant metrics
+            - python -m tws_equities run tickers -f test
+                - Validation points:
+                    - Load tickers from a pre-defined test list
+                    - Download bar-data
+                    - Convert to CSV
+                    - Generate relevant metrics

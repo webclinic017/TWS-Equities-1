@@ -50,22 +50,26 @@ class _BarSize:
 
     def __call__(self, bar_size):
         _err = 'Expected a string containing a digit and a valid unit for bar size (Ex: "1 min").'
-        valid_bar_sizes = {
-            'secs': [1, 5, 10, 15, 30],
-            'min': [1, 2, 3, 5, 10, 15, 20, 30],
-            'hour': [1, 2, 3, 4, 8],
-            'day': [1],
-            'week': [1],
-            'month': [1]
-        }
+        # valid_bar_sizes = {
+        #     'secs': [1, 5, 10, 15, 30],
+        #     'mins': [1, 2, 3, 5, 10, 15, 20, 30],
+        #     'hours': [1, 2, 3, 4, 8],
+        #     'days': [1],
+        #     'weeks': [1],
+        #     'months': [1]
+        # }
+        acceptable_bar_sizes = ['1 secs', '5 secs', '10 secs', '15 secs', '30 secs', '1 min', '2 mins',
+                                '3 mins', '5 mins', '10 mins', '15 mins', '20 mins', '30 mins', '1 hour',
+                                '2 hours', '3 hours', '4 hours', '8 hours', '1 day', '1W', '1M']
         try:
-            digit, unit = bar_size.split()
-            assert digit.isdigit(), f'{_err}'
-            assert unit in list(valid_bar_sizes), f'{_err}\n'\
-                                                  f'Acceptable units are: {list(valid_bar_sizes.keys())}'
-            assert int(digit) in valid_bar_sizes[unit], f'{_err}\n'\
-                                                        f'Acceptable values for given unit({unit}) are: '\
-                                                        f'{valid_bar_sizes[unit]}'
+            assert bar_size in acceptable_bar_sizes, f'{_err}\nAcceptable Values: {acceptable_bar_sizes}'
+            # digit, unit = bar_size.split()
+            # assert digit.isdigit(), f'{_err}'
+            # assert unit in list(valid_bar_sizes), f'{_err}\n'\
+            #                                       f'Acceptable units are: {list(valid_bar_sizes.keys())}'
+            # assert int(digit) in valid_bar_sizes[unit], f'{_err}\n'\
+            #                                             f'Acceptable values for given unit({unit}) are: '\
+            #                                             f'{valid_bar_sizes[unit]}'
         except Exception as e:
             raise ArgumentTypeError(f'{e}')
         return bar_size

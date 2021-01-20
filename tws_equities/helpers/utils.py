@@ -1,6 +1,10 @@
-from time import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime as dt
 from datetime import timedelta
+from functools import partial
+import inspect
+from json import dumps
+from json import loads
 from os.path import isdir
 from os.path import join
 from os.path import isfile
@@ -10,12 +14,8 @@ from os import makedirs
 from os import remove
 from os import rmdir
 import pandas as pd
-from concurrent.futures import ThreadPoolExecutor
-from functools import partial
-import inspect
-from json import dumps
-from json import loads
-from sys import stdout
+from time import time
+# from sys import stdout
 
 
 def timer(function):

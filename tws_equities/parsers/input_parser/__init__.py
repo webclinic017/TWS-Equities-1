@@ -73,7 +73,7 @@ def parse_user_args(command_line=None):
     # user did not specify tickers
     if hasattr(args, 'tickers') and args.tickers is None:
         stdout.write(f'User did not specify target tickers, loading from default input file.\n')
-        args.tickers = get_default_tickers()[:500]  # TODO: remove it
+        args.tickers = get_default_tickers()[:5]  # TODO: remove it
 
     return vars(args)
 
